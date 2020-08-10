@@ -2,6 +2,7 @@
   Layout = "_Layout";
 }
 
+@using Library.Models
 @model Library.Models.Book
 
 <h4>Add new book:</h4>
@@ -19,10 +20,9 @@
   @Html.LabelFor(model => model.Publisher)
   @Html.TextBoxFor(model => model.Publisher, new { @class="form-control"})
   @Html.LabelFor(model => model.Genre)
-  @Html.EnumDropDownListFor(model => model.Genre, new { @class="form-control"})
-  @* @Html.DropDownList("Genre",
+  @Html.DropDownList("Genre",
                     new SelectList(Enum.GetValues(typeof(BookGenre))),
-                    new { @class = "form-control" }) *@
+                    new { @class = "form-control" })
   
   
   <input type="submit" value="Add Book" />

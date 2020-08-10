@@ -2,6 +2,7 @@
   Layout = "_Layout";
 }
 
+@using Library.Models
 @model Library.Models.Book
 
 <h1>Delete a book?!?!?!?!</h1>
@@ -13,11 +14,14 @@
 <h3>Edition: @Model.Edition</h3>
 <h3>Publisher: @Model.Publisher</h3>
 <h3>Genre: @Model.Genre</h3>
-
+@* 
 @if(@Model.Authors.Count == 1)
 {
   <h3>Author:</h3>
-  @Html.ActionLink(author.Name, "Details", "Authors", new { id = author.AuthorId })
+  foreach(AuthorBook authorBook in @Model.Authors)
+  {
+  @Html.ActionLink(authorBook.Author.Name, "Details", "Authors", new { id = authorBook.Author.AuthorId })
+  }
 } 
 else if (@Model.Authors.Count == 0)
 {
@@ -28,12 +32,12 @@ else
 {
   <p>This book was written by: </p>
   <ul>
-  foreach(Author author in @Model.Authors)
+  foreach(AuthorBook authorBook in @Model.Authors)
   {
-    <li>@Html.ActionLink(author.Name, "Details", "Authors", new { id = author.AuthorId })</li>
+    <li>@Html.ActionLink(authorBook.Author.Name, "Details", "Authors", new { id = authorBook.Author.AuthorId })</li>
   }
   </ul>
-}
+} *@
 <hr/>
 
 
