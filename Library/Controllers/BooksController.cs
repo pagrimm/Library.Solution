@@ -27,5 +27,11 @@ namespace Library.Controllers
       List<Book> bookList = _db.Books.Include(books => books.Authors).ThenInclude(join => join.Author).OrderBy(books => books.Title).ToList();
       return View(bookList);
     }
+
+    public ActionResult Details(int id)
+    {
+      var thisBook = _db.Books..Include(books => books.Authors).ThenInclude(join => join.Author).FirstOrDefault(books => books.BookId == id);
+      return View(thisBook);
+    }
   }
 }
