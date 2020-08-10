@@ -1,0 +1,44 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Book
+
+<h1>Delete a book?!?!?!?!</h1>
+<hr/>
+
+<h3>Title: @Model.Title</h3>
+<h3>Publication Date: @Model.PublicationDate.ToShortDateString()</h3>
+<h3>Description: @Model.Description</h3>
+<h3>Edition: @Model.Edition</h3>
+<h3>Publisher: @Model.Publisher</h3>
+<h3>Genre: @Model.Genre</h3>
+
+@if(@Model.Authors.Count == 1)
+{
+  <h3>Author:</h3>
+  @Html.ActionLink(author.Name, "Details", "Authors", new { id = author.AuthorId })
+} 
+else if (@Model.Authors.Count == 0)
+{
+  <h3>This Book has no authors!</h3>
+  @Html.ActionLink("Would you like to add one?", "AddAuthor", new {id = @Model.BookId })
+}
+else 
+{
+  <p>This book was written by: </p>
+  <ul>
+  foreach(Author author in @Model.Authors)
+  {
+    <li>@Html.ActionLink(author.Name, "Details", "Authors", new { id = author.AuthorId })</li>
+  }
+  </ul>
+}
+<hr/>
+
+
+<h2>Are you sure you want to delete: @model.Title</h2>
+@using (Html.BeginForm())
+{
+  <button type="submit" class="btn btn-alert">Delete?</button>
+}
