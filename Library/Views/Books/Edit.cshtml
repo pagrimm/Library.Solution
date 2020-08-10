@@ -4,20 +4,27 @@
 
 @model Library.Models.Book
 
-<h4>Add new book:</h4>
+<h4>Edit this book: @Html.DisplayFor(model => model.Title)</h4>
 
 @using (Html.BeginForm())
 {
+  @Html.HiddenFor(model => model.BookId)
+
   @Html.LabelFor(model => model.Title)
-  @Html.TextBoxFor(model => model.Title, new { @class="form-control"})
+  @Html.EditorFor(model => model.Title, new { @class="form-control"} )
+
   @Html.LabelFor(model => model.PublicationDate)
-  @Html.TextBoxFor(model => model.PublicationDate, new { @type = "date", @class="form-control"})
+  @Html.EditorFor(model => model.PublicationDate, new { @type = "date", @class="form-control"})
+
   @Html.LabelFor(model => model.Description)
-  @Html.TextBoxFor(model => model.Description, new { @class="form-control"})
+  @Html.EditorFor(model => model.Description, new { @class="form-control"})
+
   @Html.LabelFor(model => model.DeweyDecimalNum)
-  @Html.TextBoxFor(model => model.DeweyDecimalNum, new { @class="form-control"})
+  @Html.EditorFor(model => model.DeweyDecimalNum, new { @class="form-control"})
+
   @Html.LabelFor(model => model.Publisher)
-  @Html.TextBoxFor(model => model.Publisher, new { @class="form-control"})
+  @Html.EditorFor(model => model.Publisher, new { @class="form-control"})
+
   @Html.LabelFor(model => model.Genre)
   @Html.EnumDropDownListFor(model => model.Genre, new { @class="form-control"})
   @* @Html.DropDownList("Genre",
@@ -28,4 +35,3 @@
   <input type="submit" value="Add Book" />
 
 }
-
