@@ -1,0 +1,31 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Book
+
+<h4>Add new book:</h4>
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Title)
+  @Html.TextBoxFor(model => model.Title)
+  @Html.LabelFor(model => model.PublicationDate)
+  @Html.TextBoxFor(model => model.PublicationDate, new { @type = "date"})
+  @Html.LabelFor(model => model.Description)
+  @Html.TextBoxFor(model => model.Description)
+  @Html.LabelFor(model => model.DeweyDecimalNum)
+  @Html.TextBoxFor(model => model.DeweyDecimalNum)
+  @Html.LabelFor(model => model.Publisher)
+  @Html.TextBoxFor(model => model.Publisher)
+  @Html.LabelFor(model => model.Genre)
+  @Html.EnumDropDownListFor(model => model.Genre)
+  @* @Html.DropDownList("Genre",
+                    new SelectList(Enum.GetValues(typeof(BookGenre))),
+                    new { @class = "form-control" }) *@
+  
+  
+  <input type="submit" value="Add Book" />
+
+}
+

@@ -33,5 +33,19 @@ namespace Library.Controllers
       var thisBook = _db.Books..Include(books => books.Authors).ThenInclude(join => join.Author).FirstOrDefault(books => books.BookId == id);
       return View(thisBook);
     }
+
+    public ActionResult Create()
+    {
+      //ViewBag.Genre = new SelectList(_db.Books, "Genre", "Genre");
+      return View();
+    }
+
+    [HttpPost]
+    public ActionResult Create(Book book)
+    {
+      _db.Books.Add(book);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }
