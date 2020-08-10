@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/* using System.Collections.Generic;
 
 namespace Library.Models
 {
@@ -9,4 +9,4 @@ namespace Library.Models
     public virtual Book Book { get; set; }
     public virtual ApplicationUser User { get; set; }
   }
-}
+} */
