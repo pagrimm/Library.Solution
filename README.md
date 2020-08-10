@@ -33,10 +33,9 @@ Book                            Author              Copies
 * Authors                       * Books             * Book Id
 * BookId                        * AuthorId          * Book Obj
 * Description                   * Bio Blurb         * 
-* Genre
-* Dewey Decimal #
-* Edition
-* Publisher
+
+
+
 
 
 * As a patron, I want to check a book out, so that I can take it home with me.
