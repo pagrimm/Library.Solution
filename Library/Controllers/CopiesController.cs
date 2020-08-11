@@ -56,8 +56,19 @@ namespace Library.Controllers
       copyToCheckOut.User = currentUser;
       copyToCheckOut.CheckoutDate = DateTime.Today;
       copyToCheckOut.DueDate = DateTime.Today.AddDays(21);
-      copyToCheckOut.
+      copyToCheckOut.IsCheckedOut = true;
       _db.Entry(copyToCheckOut).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult Return (int CopyId)
+    {
+      var copy = _db.Copies.FirstOrDefault(c => c.CopyId == CopyId);
+      copy.User = null;
+      copy.IsCheckedOut = false;
+      _db.Entry(copy).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

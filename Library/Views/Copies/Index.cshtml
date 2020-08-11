@@ -17,6 +17,10 @@ else
     @foreach(Copy copy in Model)
     {
       <li>@copy.Book.Title, Checkout date: @copy.CheckoutDate, Due date: @copy.DueDate</li>
+      @using (Html.BeginForm("Return", "Copies", new {CopyId = copy.CopyId}))
+      {
+        <button class="btn btn-info" type="submit">Return Book</button>
+      }
     }
   </ul>
 }
