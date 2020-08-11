@@ -36,7 +36,12 @@ namespace Library.Controllers
 
     public ActionResult Details(int id)
     {
-      var thisBook = _db.Books.Include(books => books.Authors).ThenInclude(join => join.Author).FirstOrDefault(books => books.BookId == id);
+      var thisBook = _db.Books.Include(books => books.Authors)
+      .ThenInclude(join => join.Author)
+      .Include(books => books.Copies)
+      .FirstOrDefault(books => books.BookId == id);
+      ViewBag.CheckedOutCount = _db.Copies.Where(copy => copy.BookId == id).Where(copy => copy.IsCheckedOut == true).ToList().Count;
+      ViewBag.AvailableCount = _db.Copies.Where(copy => copy.BookId == id).Where(copy => copy.IsCheckedOut == false).ToList().Count;
       return View(thisBook);
     }
 

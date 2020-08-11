@@ -101,7 +101,7 @@ namespace Library.Controllers
     [HttpPost]
     public ActionResult DeleteBook(int JoinId)
     {
-      var joinEntry = _db.AuthorBook.FirstOrDefault(entry => entry.AuthorBookId == joinId);
+      var joinEntry = _db.AuthorBook.FirstOrDefault(entry => entry.AuthorBookId == JoinId);
       _db.AuthorBook.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");

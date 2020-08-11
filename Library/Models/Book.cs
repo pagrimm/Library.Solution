@@ -9,6 +9,7 @@ namespace Library.Models
     public Book()
     {
       this.Authors = new HashSet<AuthorBook>();
+      this.Copies = new HashSet<Copy>();
     }
 
     public int BookId { get; set; }
@@ -20,6 +21,7 @@ namespace Library.Models
     public string Publisher { get; set; }
 
     public virtual ICollection<AuthorBook> Authors { get; set; }
+    public virtual ICollection<Copy> Copies { get; set; }
     public BookGenre Genre { get; set; }
 
   }

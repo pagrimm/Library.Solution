@@ -11,7 +11,9 @@
 <h3>Name: @Model.Name</h3>
 <h3>Date Of Birth: @Model.DateOfBirth.ToShortDateString()</h3>
 <h3>Bio: @Model.Bio</h3>
-
+<br>
+<button class="btn btn-alert">@Html.ActionLink("Delete Author", "Delete", new { id = Model.AuthorId})</button>
+<br>
 
 @if(@Model.Books.Count == 0)
 {
@@ -20,7 +22,7 @@
 }
 else 
 {
-  <p>This book was written by: </p>
+  <p>Books written by this author: </p>
   <ul>
   @foreach(AuthorBook join in Model.Books)
   {

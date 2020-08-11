@@ -14,7 +14,9 @@
 <h3>Edition: @Model.Edition</h3>
 <h3>Publisher: @Model.Publisher</h3>
 <h3>Genre: @Model.Genre</h3>
-
+<br>
+<button class="btn btn-alert">@Html.ActionLink("Delete Book", "Delete", new { id = Model.BookId})</button>
+<br>
 @if(@Model.Authors.Count == 0)
 {
   <h3>This Book has no authors!</h3>
@@ -29,4 +31,25 @@ else
     <li>@Html.ActionLink($"{join.Author.Name}", "Details", "Authors", new { id = join.Author.AuthorId })</li>
   }
   </ul>
+
+
 }
+@if((@ViewBag.CheckoutCount + @ViewBag.AvailableCount) == 0)
+{
+  <p>There are no copies of this book in circulation at this library!</p>
+}
+else 
+{
+<p>Copies of this book currently checked out: @ViewBag.CheckedOutCount</p>
+
+<p>Copies available: @ViewBag.AvailableCount</p>
+}
+<h3>Add Additional Copies?</h3>
+@using (Html.BeginForm("Create", "Copies", FormMethod.Post))
+{
+  @Html.HiddenFor(model => model.BookId)
+  @Html.Label("Copies to Add")
+  @Html.TextBox("Copies", "Enter number to add", new { @type = "number" } )
+  <button class="btn btn-info" type="submit">Add</button>
+}
+
