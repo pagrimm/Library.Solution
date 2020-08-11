@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace Library.Controllers
 {
+  [Authorize]
   public class BooksController: Controller
   {
     private readonly LibraryContext _db;
@@ -24,6 +25,11 @@ namespace Library.Controllers
 
     public ActionResult Index()
     {
+      // var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      // var currentUser = await _userManager.FindByIdAsync(userId);
+      // var userCopies = _db.Copies.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      // return View();
+
       List<Book> bookList = _db.Books.Include(books => books.Authors).ThenInclude(join => join.Author).OrderBy(books => books.Title).ToList();
       return View(bookList);
     }
@@ -52,6 +58,11 @@ namespace Library.Controllers
     {
       var thisBook = _db.Books.FirstOrDefault(books => books.BookId == id);
       return View(thisBook);
+      // var thisBook = _db.Books  
+      //   .Include(book => book.Authors)
+      //   .ThenInclude(join => join.Author)
+      //   .FirstOrDefault(book => book.BookId == id);
+      // ViewBag.IsCurrentUser = userId != null ? userId == thisBook.User.Id : false;
     }
 
     [HttpPost]
