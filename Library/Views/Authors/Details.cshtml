@@ -1,0 +1,30 @@
+@{
+  Layout ="_Layout";
+}
+
+@using Library.Models;
+@model Library.Models.Author
+
+<h2>Author Details!</h2>
+<hr/>
+
+<h3>Name: @Model.Name</h3>
+<h3>Date Of Birth: @Model.DateOfBirth.ToShortDateString()</h3>
+<h3>Bio: @Model.Bio</h3>
+
+
+@if(@Model.Books.Count == 0)
+{
+  <h3>This Author has no Books!</h3>
+  @Html.ActionLink("Would you like to add one?", "AddBook", new {id = @Model.AuthorId })
+}
+else 
+{
+  <p>This book was written by: </p>
+  <ul>
+  @foreach(AuthorBook join in Model.Books)
+  {
+    <li>@Html.ActionLink($"{join.Book.Title}", "Details", "Books", new { id = join.Book.BookId })</li>
+  }
+  </ul>
+}

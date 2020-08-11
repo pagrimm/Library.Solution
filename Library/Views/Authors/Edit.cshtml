@@ -1,0 +1,24 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models;
+@model Library.Models.Author;
+
+<h4>Edit this Author: @Html.DisplayFor(model => model.Name)</h4>
+<hr/>
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Name)
+  @Html.TextBoxFor(model => model.Name, new { @class="form-control"})
+
+  @Html.LabelFor(model => model.DateOfBirth)
+  @Html.TextBoxFor(model => model.DateOfBirth, new { @type = "date", @class="form-control"})
+
+  @Html.LabelFor(model => model.Bio)
+  @Html.TextAreaFor(model => model.Bio, new { @class="form-control"})
+  
+  <button type="submit" class="btn btn-default">Save Changes</button>
+}
+

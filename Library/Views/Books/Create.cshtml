@@ -22,9 +22,7 @@
   @Html.LabelFor(model => model.Publisher)
   @Html.TextBoxFor(model => model.Publisher, new { @class="form-control"})
   @Html.LabelFor(model => model.Genre)
-  @Html.DropDownList("Genre",
-                    new SelectList(Enum.GetValues(typeof(BookGenre))),
-                    new { @class = "form-control" })
+  @Html.DropDownList("Genre", new SelectList(Enum.GetValues(typeof(BookGenre))), new { @class = "form-control" })
   
   
   <input type="submit" value="Add Book" />
