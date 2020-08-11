@@ -12,14 +12,24 @@ using System.Security.Claims;
 
 namespace Library.Controllers
 {
+  [Authorize]
   public class CopiesController : Controller
   {
 
     private readonly LibraryContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public CopiesController(LibraryContext db)
+    public CopiesController(UserManager<ApplicationUser> userManager, LibraryContext db)
     {
+      _userManager = userManager;
       _db = db;
+    }
+
+    public ActionResult Index()
+    {
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      List<Copy> copyList = _db.Copies.Where(copy => copy.User.Id == userId).Include(copy => copy.Book).ToList();
+      return View(copyList);
     }
 
     [HttpPost]
@@ -35,6 +45,21 @@ namespace Library.Controllers
         _db.SaveChanges();
       }
       return RedirectToAction("Details", "Books",  new { id = BookId } );
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> CheckOut(int BookId)
+    {
+      Copy copyToCheckOut = _db.Copies.Where(copy => copy.BookId == BookId).Where(copy => copy.IsCheckedOut != true).FirstOrDefault();
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+      copyToCheckOut.User = currentUser;
+      copyToCheckOut.CheckoutDate = DateTime.Today;
+      copyToCheckOut.DueDate = DateTime.Today.AddDays(21);
+      copyToCheckOut.
+      _db.Entry(copyToCheckOut).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
     }
   }
 }
