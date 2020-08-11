@@ -2,6 +2,7 @@
   Layout ="_Layout";
 }
 
+@using Library.Models;
 @model Library.Models.Book
 
 <h2>Book Details!</h2>
@@ -14,12 +15,7 @@
 <h3>Publisher: @Model.Publisher</h3>
 <h3>Genre: @Model.Genre</h3>
 
-@if(@Model.Authors.Count == 1)
-{
-  <h3>Author:</h3>
-  @Html.ActionLink(author.Name, "Details", "Authors", new { id = author.AuthorId })
-} 
-else if (@Model.Authors.Count == 0)
+@if(@Model.Authors.Count == 0)
 {
   <h3>This Book has no authors!</h3>
   @Html.ActionLink("Would you like to add one?", "AddAuthor", new {id = @Model.BookId })
@@ -28,9 +24,9 @@ else
 {
   <p>This book was written by: </p>
   <ul>
-  foreach(Author author in @Model.Authors)
+  @foreach(AuthorBook join in Model.Authors)
   {
-    <li>@Html.ActionLink(author.Name, "Details", "Authors", new { id = author.AuthorId })</li>
+    <li>@Html.ActionLink($"{join.Author.Name}", "Details", "Authors", new { id = join.Author.AuthorId })</li>
   }
   </ul>
 }
