@@ -16,6 +16,7 @@
 <h3>Genre: @Model.Genre</h3>
 <br>
 <button class="btn btn-alert">@Html.ActionLink("Delete Book", "Delete", new { id = Model.BookId})</button>
+<button class="btn btn-info">@Html.ActionLink("More Information", "Index", "Articles", new { query = Model.Title, type = "title" } )</button>
 <br>
 @if(@Model.Authors.Count == 0)
 {
