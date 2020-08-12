@@ -28,7 +28,7 @@ namespace Library.Controllers
     public ActionResult Index()
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      List<Copy> copyList = _db.Copies.Where(copy => copy.User.Id == userId).Include(copy => copy.Book).ToList();
+      List<CopyApplicationUser> copyList = _db.CopyApplicationUser.Where(entry => entry.ApplicationUserId == userId).Include(join => join.Copy).ThenInclude(copy => copy.Book).ToList();
       return View(copyList);
     }
 
@@ -50,25 +50,43 @@ namespace Library.Controllers
     [HttpPost]
     public async Task<ActionResult> CheckOut(int BookId)
     {
+      // Return to Index if No copies are available to checkout
+      var availableCopies = _db.Copies.Where(copy => copy.BookId == BookId).Where(copy => copy.IsCheckedOut != true).ToList().Count;
+      if(availableCopies == 0)
+      {
+        return RedirectToAction ("Index");
+      }
+
       Copy copyToCheckOut = _db.Copies.Where(copy => copy.BookId == BookId).Where(copy => copy.IsCheckedOut != true).FirstOrDefault();
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      copyToCheckOut.User = currentUser;
-      copyToCheckOut.CheckoutDate = DateTime.Today;
-      copyToCheckOut.DueDate = DateTime.Today.AddDays(21);
+      
+      CopyApplicationUser thisUser = new CopyApplicationUser();
+      thisUser.CheckoutDate = DateTime.Today;
+      thisUser.DueDate = DateTime.Today.AddDays(21);
+      thisUser.Returned = false;
+      thisUser.Copy = copyToCheckOut;
+      thisUser.CopyId = copyToCheckOut.CopyId;
+      thisUser.ApplicationUser = currentUser;
+      thisUser.ApplicationUserId = userId;
+      
       copyToCheckOut.IsCheckedOut = true;
+      
       _db.Entry(copyToCheckOut).State = EntityState.Modified;
+      _db.CopyApplicationUser.Add(thisUser);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public ActionResult Return (int CopyId)
+    public ActionResult Return (int CopyApplicationUserId)
     {
-      var copy = _db.Copies.FirstOrDefault(c => c.CopyId == CopyId);
-      copy.User = null;
-      copy.IsCheckedOut = false;
-      _db.Entry(copy).State = EntityState.Modified;
+      var returnThis = _db.CopyApplicationUser.FirstOrDefault(join => join.CopyApplicationUserId == CopyApplicationUserId);
+      var copyToReturn = _db.Copies.Where(copy => copy.CopyId == returnThis.CopyId).FirstOrDefault();
+      returnThis.Returned = true;
+      copyToReturn.IsCheckedOut = false;
+      _db.Entry(copyToReturn).State = EntityState.Modified;
+      _db.Entry(returnThis).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

@@ -3,14 +3,16 @@ using System;
 using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20200812170454_CopyTableUpdateV2")]
+    partial class CopyTableUpdateV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,37 +136,21 @@ namespace Library.Migrations
 
                     b.Property<int>("BookId");
 
+                    b.Property<DateTime>("CheckoutDate");
+
+                    b.Property<DateTime>("DueDate");
+
                     b.Property<bool>("IsCheckedOut");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("CopyId");
 
                     b.HasIndex("BookId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Copies");
-                });
-
-            modelBuilder.Entity("Library.Models.CopyApplicationUser", b =>
-                {
-                    b.Property<int>("CopyApplicationUserId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId");
-
-                    b.Property<DateTime>("CheckoutDate");
-
-                    b.Property<int>("CopyId");
-
-                    b.Property<DateTime>("DueDate");
-
-                    b.Property<bool>("Returned");
-
-                    b.HasKey("CopyApplicationUserId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("CopyId");
-
-                    b.ToTable("CopyApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -293,18 +279,10 @@ namespace Library.Migrations
                         .WithMany("Copies")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("Library.Models.CopyApplicationUser", b =>
-                {
-                    b.HasOne("Library.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Library.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("Library.Models.Copy", "Copy")
-                        .WithMany()
-                        .HasForeignKey("CopyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

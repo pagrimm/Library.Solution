@@ -16,6 +16,7 @@
 <h3>Genre: @Model.Genre</h3>
 <br>
 <button class="btn btn-alert">@Html.ActionLink("Delete Book", "Delete", new { id = Model.BookId})</button>
+<button class="btn btn-info">@Html.ActionLink("More Information", "Index", "Articles", new { query = Model.Title, type = "title" } )</button>
 <br>
 @if(@Model.Authors.Count == 0)
 {
@@ -31,6 +32,8 @@ else
     <li>@Html.ActionLink($"{join.Author.Name}", "Details", "Authors", new { id = join.Author.AuthorId })</li>
   }
   </ul>
+
+  @Html.ActionLink("Add another Author for this book", "AddAuthor", new {id = @Model.BookId })
 
 
 }

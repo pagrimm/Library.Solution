@@ -1,0 +1,26 @@
+@{
+  Layout="_Layout";
+}
+
+@using Library.Models;
+@model List<Library.Models.Article>
+
+<h1>Info</h1>
+<hr/>
+
+@if(Model.Count == 0)
+{
+  <h2>There are no NY Times book reviews for this book/author.</h2>
+}
+else
+{
+  @foreach(Article article in Model)
+  {
+    <h2>@article.Book_Title</h2>
+    <h3>Author: @article.Book_Author</h3>
+    <h3>Publication Date: @article.Publication_Dt</h3>
+    <p>Summary: @article.Summary</p>
+    <p>Review: <a href="@article.Url">Click here for a link to the NYT review!</a></p>
+    <br>
+  }
+}

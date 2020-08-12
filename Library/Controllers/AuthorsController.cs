@@ -68,7 +68,7 @@ namespace Library.Controllers
     public ActionResult AddBook(int id)
     {
       var thisAuthor = _db.Authors.FirstOrDefault(authors => authors.AuthorId == id);
-      ViewBag.BookId = new SelectList(_db.Books, "BookId", "Name");
+      ViewBag.BookId = new SelectList(_db.Books, "BookId", "Title");
       return View(thisAuthor);
     }
 

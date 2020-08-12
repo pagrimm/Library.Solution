@@ -13,6 +13,7 @@
 <h3>Bio: @Model.Bio</h3>
 <br>
 <button class="btn btn-alert">@Html.ActionLink("Delete Author", "Delete", new { id = Model.AuthorId})</button>
+<button class="btn btn-info">@Html.ActionLink("More Information", "Index", "Articles", new { query = Model.Name, type = "author" } )</button>
 <br>
 
 @if(@Model.Books.Count == 0)
@@ -30,3 +31,5 @@ else
   }
   </ul>
 }
+
+@Html.ActionLink("Add a Book To this Author", "AddBook", new {id = @Model.AuthorId })
