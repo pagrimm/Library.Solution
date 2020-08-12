@@ -32,6 +32,8 @@ else
   }
   </ul>
 
+  @Html.ActionLink("Add another Author for this book", "AddAuthor", new {id = @Model.BookId })
+
 
 }
 @if((@ViewBag.CheckoutCount + @ViewBag.AvailableCount) == 0)
