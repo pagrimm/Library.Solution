@@ -1,0 +1,19 @@
+@{
+  Layout="_Layout";
+}
+
+@using Library.Models;
+@model List<Library.Models.Article>
+
+<h1>Info</h1>
+<hr/>
+
+@foreach(Article article in Model)
+{
+  <h2>@article.Book_Title</h2>
+  <h3>Section: @article.Book_Author</h3>
+  <h3>Publication Date: @article.Publication_Dt</h3>
+  <p>Summary: @article.Summary</p>
+  <p>Review: <a href="@article.Url">Click here for a link to the NYT review!</a></p>
+  <br>
+}

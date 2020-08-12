@@ -6,11 +6,11 @@ namespace Library.Models
 {
   public class Article
   {
-    public string Section { get; set; }
-    public string Title { get; set; }
-    public string Abstract { get; set; }
+    public string Book_Title { get; set; }
+    public string Book_Author { get; set; }
+    public string Publication_Dt { get; set; }
+    public string Summary { get; set; }
     public string Url { get; set; }
-    public string Byline { get; set; }
 
     public static List<Article> GetArticles(string query, string type)
     {
