@@ -61,6 +61,8 @@ namespace Library.Controllers
       thisUser.CopyId = copyToCheckOut.CopyId;
       thisUser.ApplicationUser = currentUser;
       thisUser.ApplicationUserId = userId;
+      copyToCheckOut.IsCheckedOut = true;
+      _db.Entry(copyToCheckOut).State = EntityState.Modified;
       _db.CopyApplicationUser.Add(thisUser);
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -70,7 +72,10 @@ namespace Library.Controllers
     public ActionResult Return (int CopyApplicationUserId)
     {
       var returnThis = _db.CopyApplicationUser.FirstOrDefault(join => join.CopyApplicationUserId == CopyApplicationUserId);
+      var copyToReturn = _db.Copies.Where(copy => copy.CopyId == returnThis.CopyId).FirstOrDefault();
       returnThis.Returned = true;
+      copyToReturn.IsCheckedOut = false;
+      _db.Entry(copyToReturn).State = EntityState.Modified;
       _db.Entry(returnThis).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
