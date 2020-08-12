@@ -28,7 +28,7 @@ namespace Library.Controllers
     public ActionResult Index()
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      List<Copy> copyList = _db.Copies.Where(copy => copy.User.Id == userId).Include(copy => copy.Book).ToList();
+      List<Copy> copyList = _db.Copies.Where(copy => copy.User.Id == userId).Where(copy => copy.IsCheckedOut == true).Include(copy => copy.Book).ToList();
       return View(copyList);
     }
 
@@ -67,6 +67,7 @@ namespace Library.Controllers
     {
       var copy = _db.Copies.FirstOrDefault(c => c.CopyId == CopyId);
       copy.User = null;
+      copy.UserId = "";
       copy.IsCheckedOut = false;
       _db.Entry(copy).State = EntityState.Modified;
       _db.SaveChanges();
