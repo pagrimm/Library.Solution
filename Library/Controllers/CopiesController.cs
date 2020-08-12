@@ -53,11 +53,15 @@ namespace Library.Controllers
       Copy copyToCheckOut = _db.Copies.Where(copy => copy.BookId == BookId).Where(copy => copy.IsCheckedOut != true).FirstOrDefault();
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      copyToCheckOut.User = currentUser;
-      copyToCheckOut.CheckoutDate = DateTime.Today;
-      copyToCheckOut.DueDate = DateTime.Today.AddDays(21);
-      copyToCheckOut.IsCheckedOut = true;
-      _db.Entry(copyToCheckOut).State = EntityState.Modified;
+      CopyApplicationUser thisUser = new CopyApplicationUser();
+      thisUser.CheckoutDate = DateTime.Today;
+      thisUser.DueDate = DateTime.Today.AddDays(21);
+      thisUser.Returned = false;
+      thisUser.Copy = copyToCheckOut;
+      thisUser.CopyId = copyToCheckOut.CopyId;
+      thisUser.ApplicationUser = currentUser;
+      thisUser.ApplicationUserId = userId;
+      _db.CopyApplicationUser.Add(thisUser);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

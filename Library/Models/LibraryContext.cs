@@ -9,6 +9,7 @@ namespace Library.Models
     public DbSet<Author> Authors { get; set; }
     public DbSet<AuthorBook> AuthorBook {get; set; }
     public DbSet<Copy> Copies { get; set; }
+    public DbSet<CopyApplicationUser> CopyApplicationUser { get; set; }
 
     public LibraryContext(DbContextOptions options) : base(options) { }
   }
