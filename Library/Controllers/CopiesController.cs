@@ -28,7 +28,7 @@ namespace Library.Controllers
     public ActionResult Index()
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      List<Copy> copyList = _db.Copies.Where(copy => copy.User.Id == userId).Where(copy => copy.IsCheckedOut == true).Include(copy => copy.Book).ToList();
+      List<CopyApplicationUser> copyList = _db.CopyApplicationUser.Where(entry => entry.ApplicationUserId == userId).Include(join => join.Copy).ThenInclude(copy => copy.Book).ToList();
       return View(copyList);
     }
 
@@ -67,13 +67,11 @@ namespace Library.Controllers
     }
 
     [HttpPost]
-    public ActionResult Return (int CopyId)
+    public ActionResult Return (int CopyApplicationUserId)
     {
-      var copy = _db.Copies.FirstOrDefault(c => c.CopyId == CopyId);
-      copy.User = null;
-      copy.UserId = "";
-      copy.IsCheckedOut = false;
-      _db.Entry(copy).State = EntityState.Modified;
+      var returnThis = _db.CopyApplicationUser.FirstOrDefault(join => join.CopyApplicationUserId == CopyApplicationUserId);
+      returnThis.Returned = true;
+      _db.Entry(returnThis).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
