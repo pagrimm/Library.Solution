@@ -50,9 +50,17 @@ namespace Library.Controllers
     [HttpPost]
     public async Task<ActionResult> CheckOut(int BookId)
     {
+      // Return to Index if No copies are available to checkout
+      var availableCopies = _db.Copies.Where(copy => copy.BookId == BookId).Where(copy => copy.IsCheckedOut != true).ToList().Count;
+      if(availableCopies == 0)
+      {
+        return RedirectToAction ("Index");
+      }
+
       Copy copyToCheckOut = _db.Copies.Where(copy => copy.BookId == BookId).Where(copy => copy.IsCheckedOut != true).FirstOrDefault();
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
+      
       CopyApplicationUser thisUser = new CopyApplicationUser();
       thisUser.CheckoutDate = DateTime.Today;
       thisUser.DueDate = DateTime.Today.AddDays(21);
@@ -61,7 +69,9 @@ namespace Library.Controllers
       thisUser.CopyId = copyToCheckOut.CopyId;
       thisUser.ApplicationUser = currentUser;
       thisUser.ApplicationUserId = userId;
+      
       copyToCheckOut.IsCheckedOut = true;
+      
       _db.Entry(copyToCheckOut).State = EntityState.Modified;
       _db.CopyApplicationUser.Add(thisUser);
       _db.SaveChanges();
